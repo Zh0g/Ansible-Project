@@ -1,0 +1,126 @@
+- name: Playbook Apache Guacamole
+  hosts: bastion
+  become: true
+  vars:
+    guacamole_version: "1.5.3"
+    tomcat_version: "9"
+    guacamole_db_password: "change_me"  # Remplacez par un mot de passe sécurisé
+    db_user: "guacamole_user"
+    db_name: "guacamole_db"
+  tasks:
+    - name: Mettre à jour les paquets
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installer les dépendances requises
+      apt:
+        name:
+          - build-essential
+          - libcairo2-dev
+          - libjpeg-turbo8-dev
+          - libpng-dev
+          - libtool-bin
+          - libossp-uuid-dev
+          - libvncserver-dev
+          - freerdp2-dev
+          - libssh2-1-dev
+          - libtelnet-dev
+          - libssl-dev
+          - libvorbis-dev
+          - libwebp-dev
+          - tomcat{{ tomcat_version }}
+          - mysql-server
+          - mysql-client
+          - default-jdk
+          - wget
+        state: present
+
+    - name: Télécharger Guacamole Server
+      get_url:
+        url: "https://apache.org/dyn/closer.cgi?action=download&filename=guacamole/{{ guacamole_version }}/source/guacamole-server-{{ guacamole_version }}.tar.gz"
+        dest: /tmp/guacamole-server-{{ guacamole_version }}.tar.gz
+
+    - name: Extraire et compiler Guacamole Server
+      command: >
+        tar -xzf /tmp/guacamole-server-{{ guacamole_version }}.tar.gz
+        chdir=/tmp
+      register: guac_compile
+
+    - name: Compiler et installer Guacamole Server
+      shell: |
+        cd /tmp/guacamole-server-{{ guacamole_version }}
+        ./configure --with-init-dir=/etc/init.d
+        make
+        make install
+        ldconfig
+
+    - name: Démarrer le service Guacamole
+      service:
+        name: guacd
+        state: started
+        enabled: true
+
+    - name: Configurer MySQL pour Guacamole
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ guacamole_db_password }}"
+        host: "localhost"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+
+    - name: Créer la base de données Guacamole
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+
+    - name: Télécharger le schéma SQL pour Guacamole
+      get_url:
+        url: "https://apache.org/dyn/closer.cgi?action=download&filename=guacamole/{{ guacamole_version }}/binary/guacamole-auth-jdbc-{{ guacamole_version }}.tar.gz"
+        dest: /tmp/guacamole-auth-jdbc-{{ guacamole_version }}.tar.gz
+
+    - name: Extraire le fichier JDBC
+      unarchive:
+        src: /tmp/guacamole-auth-jdbc-{{ guacamole_version }}.tar.gz
+        dest: /tmp
+        remote_src: yes
+
+    - name: Importer le schéma SQL dans la base
+      mysql_db:
+        name: "{{ db_name }}"
+        state: import
+        target: /tmp/guacamole-auth-jdbc-{{ guacamole_version }}/mysql/schema/*.sql
+
+    - name: Configurer Guacamole Client
+      copy:
+        content: |
+          guacd-hostname: localhost
+          guacd-port: 4822
+          mysql-hostname: localhost
+          mysql-port: 3306
+          mysql-database: "{{ db_name }}"
+          mysql-username: "{{ db_user }}"
+          mysql-password: "{{ guacamole_db_password }}"
+        dest: /etc/guacamole/guacamole.properties
+        owner: tomcat
+        group: tomcat
+
+    - name: Télécharger Guacamole Client
+      get_url:
+        url: "https://apache.org/dyn/closer.cgi?action=download&filename=guacamole/{{ guacamole_version }}/binary/guacamole-{{ guacamole_version }}.war"
+        dest: /var/lib/tomcat{{ tomcat_version }}/webapps/guacamole.war
+
+    - name: Redémarrer Tomcat
+      service:
+        name: tomcat{{ tomcat_version }}
+        state: restarted
+
+    - name: Configurer le pare-feu pour autoriser l'accès
+      ufw:
+        rule: allow
+        port: 8080
+        proto: tcp
+
+    - name: Afficher l'URL d'accès
+      debug:
+        msg: "Apache Guacamole est accessible via http://<adresse_IP>:8080/guacamole"
