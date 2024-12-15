@@ -1,8 +1,0 @@
----
-- name: Deploy Prometheus and Node Exporter
-  hosts: all
-  become: yes
-
-  roles:
-    - { role: prometheus, when: inventory_hostname == 'inventory' }
-    - { role: node_exporter, when: inventory_hostname == 'inventory' }
