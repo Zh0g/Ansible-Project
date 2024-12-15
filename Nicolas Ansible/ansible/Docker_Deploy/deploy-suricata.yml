@@ -1,0 +1,25 @@
+---
+- name: Deploy Suricata container
+  hosts: local
+  become: yes
+  tasks:
+    - name: Install Docker Compose
+      shell: curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
+
+    - name: Set executable permission for Docker Compose
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: 'u+x'
+
+    - name: Copy docker-compose file for Suricata
+      copy:
+        src: ./docker-compose-suricata.yml
+        dest: /home/debian/docker-compose-suricata.yml
+        owner: debian
+        group: debian
+        mode: '0644'
+
+    - name: Deploy Suricata
+      command: docker-compose -f /home/debian/docker-compose-suricata.yml up -d
