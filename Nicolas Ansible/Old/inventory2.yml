@@ -1,0 +1,10 @@
+all:
+  hosts:
+    suricata_server:
+      ansible_host: 192.168.153.129
+      ansible_user: debian
+      ansible_ssh_pass: debian
+    splunk_server:
+      ansible_host: localhost
+      ansible_user: debian
+      ansible_ssh_pass: debian

@@ -1,0 +1,23 @@
+- name: Installation et configuration de Splunk
+  hosts: splunk_server
+  become: yes
+
+  tasks:
+    - name: Télécharger et installer Splunk
+      get_url:
+        url: "https://download.splunk.com/products/splunk/releases/8.2.0/linux/splunk-8.2.0.deb"
+        dest: /tmp/splunk.deb
+
+    - name: Installer le paquet Splunk
+      apt:
+        deb: /tmp/splunk.deb
+
+    - name: Activer Splunk au démarrage
+      command: /opt/splunk/bin/splunk enable boot-start --accept-license --answer-yes
+
+    - name: Configurer Splunk pour monitorer les fichiers de Suricata
+      shell: |
+        /opt/splunk/bin/splunk add monitor /var/log/suricata/eve.json
+        /opt/splunk/bin/splunk add monitor /var/log/suricata/fast.log
+      args:
+        executable: /bin/bash

@@ -1,0 +1,27 @@
+- name: Installation et configuration de Splunk
+  hosts: splunk_server
+  become: yes
+
+  tasks:
+    - name: Telecharger et installer Splunk
+      get_url:
+        url: "https://download.splunk.com/products/universalforwarder/releases/8.2.6/linux/splunkforwarder-8.2.6-a6fe1ee8894b-linux-2.6-amd64.deb"
+        dest: /tmp/splunk.deb
+
+    - name: Installer Splunk a partir du fichier .deb
+      command: dpkg -i /tmp/splunk.deb
+      args:
+        warn: false
+
+    - name: Resoudre les dependances manquantes
+      command: apt-get install -f -y
+
+    - name: Activer Splunk au demarrage
+      shell: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes
+
+    - name: Configurer Splunk pour monitorer les fichiers de Suricata
+      shell: |
+        /opt/splunkforwarder/bin/splunk add monitor /var/log/suricata/eve.json
+        /opt/splunkforwarder/bin/splunk add monitor /var/log/suricata/fast.log
+      args:
+        executable: /bin/bash

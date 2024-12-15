@@ -1,0 +1,47 @@
+---
+- name: Deploy Nagios, Bind9, and Suricata containers
+  hosts: your_vm
+  become: yes
+  tasks:
+    - name: Install Docker Compose
+      shell: curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
+
+    - name: Set executable permission for Docker Compose
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: 'u+x'
+
+    - name: Copy docker-compose file for Nagios
+      copy:
+        src: ./docker-compose-nagios.yml
+        dest: /home/your_user/docker-compose-nagios.yml
+        owner: your_user
+        group: your_user
+        mode: '0644'
+
+    - name: Deploy Nagios
+      command: docker-compose -f /home/your_user/docker-compose-nagios.yml up -d
+
+    - name: Copy docker-compose file for Bind9
+      copy:
+        src: ./docker-compose-bind9.yml
+        dest: /home/your_user/docker-compose-bind9.yml
+        owner: your_user
+        group: your_user
+        mode: '0644'
+
+    - name: Deploy Bind9
+      command: docker-compose -f /home/your_user/docker-compose-bind9.yml up -d
+
+    - name: Copy docker-compose file for Suricata
+      copy:
+        src: ./docker-compose-suricata.yml
+        dest: /home/your_user/docker-compose-suricata.yml
+        owner: your_user
+        group: your_user
+        mode: '0644'
+
+    - name: Deploy Suricata
+      command: docker-compose -f /home/your_user/docker-compose-suricata.yml up -d

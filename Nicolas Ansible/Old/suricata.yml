@@ -1,0 +1,31 @@
+- name: Installation et configuration de Suricata
+  hosts: suricata_server
+  become: yes
+
+  tasks:
+    - name: Mettre à jour les paquets
+      apt:
+        update_cache: yes
+
+    - name: Installer Suricata
+      apt:
+        name: suricata
+        state: present
+
+    - name: Configurer HOME_NET dans suricata.yaml
+      lineinfile:
+        path: /etc/suricata/suricata.yaml
+        regexp: '^HOME_NET:.*'
+        line: 'HOME_NET: "[192.168.153.0/24]"'
+
+    - name: Créer un fichier de règles de base
+      copy:
+        dest: /etc/suricata/rules/suricata.rules
+        content: |
+          alert icmp any any -> any any (msg: "ICMP Ping Detected"; sid:1000001; rev:1;)
+
+    - name: Activer Suricata en mode IDS
+      command: suricata -c /etc/suricata/suricata.yaml -i ens33 -D
+
+    - name: Vérifier l'installation de Suricata
+      command: suricata --build-info
