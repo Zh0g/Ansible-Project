@@ -1,0 +1,5 @@
+# snort.conf template
+var HOME_NET [192.168.153.0/24]
+var EXTERNAL_NET !$HOME_NET
+
+include $RULE_PATH/local.rules

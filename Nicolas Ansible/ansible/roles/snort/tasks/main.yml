@@ -1,0 +1,180 @@
+---
+- name: Update package list
+  apt:
+    update_cache: yes
+
+- name: Install dependencies
+  apt:
+    name:
+      - build-essential
+      - libpcap-dev
+      - libpcre3-dev
+      - libdumbnet-dev
+      - zlib1g-dev
+      - bison
+      - flex
+    state: present
+
+- name: Download DAQ
+  get_url:
+    url: https://www.snort.org/downloads/snort/daq-2.0.7.tar.gz
+    dest: /tmp/daq-2.0.7.tar.gz
+
+- name: Extract DAQ
+  unarchive:
+    src: /tmp/daq-2.0.7.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Compile and install DAQ
+  command: >
+    /bin/bash -c "./configure && make && make install"
+  args:
+    chdir: /tmp/daq-2.0.7
+
+
+- name: Download Snort source
+  get_url:
+    url: https://www.snort.org/downloads/snort/snort-2.9.20.tar.gz
+    dest: /tmp/snort.tar.gz
+
+- name: Extract Snort
+  unarchive:
+    src: /tmp/snort.tar.gz
+    dest: /opt
+    remote_src: yes
+
+- name: Check if GCC is installed
+  command: gcc --version
+  register: gcc_check
+  failed_when: gcc_check.rc != 0
+
+- name: Compile and install Snort (without OpenAppId)
+  command: >
+    /bin/bash -c "./configure --disable-open-appid && make && make install"
+  args:
+    chdir: /opt/snort-2.9.20
+
+- name: Install Python 3 and MySQL modules
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - default-libmysqlclient-dev
+    state: present
+
+- name: Install mysqlclient
+  pip:
+    name: mysqlclient
+    executable: pip3
+
+- name: Install Apache, PHP, and MariaDB
+  apt:
+    name:
+      - apache2
+      - php
+      - php-mysql
+      - libapache2-mod-php
+      - mariadb-server
+    state: present
+
+- name: Start and enable Apache and MariaDB
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - apache2
+    - mariadb
+
+- name: Secure MariaDB Installation
+  shell: |
+    mysql -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('rootpassword');"
+    mysql -e "DELETE FROM mysql.user WHERE User='';"
+    mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+    mysql -e "FLUSH PRIVILEGES;"
+  args:
+    executable: /bin/bash
+
+- name: Create Snort database
+  mysql_db:
+    name: snort
+    state: present
+
+- name: Create Snort database user
+  mysql_user:
+    name: snort_user
+    password: "snortpassword"
+    priv: "snort.*:ALL"
+    state: present
+
+- name: Download BASE
+  get_url:
+    url: https://sourceforge.net/projects/secureideas/files/latest/download/base-1.4.5.tar.gz
+    dest: /tmp/base-1.4.5.tar.gz
+
+- name: Extract BASE
+  unarchive:
+    src: /tmp/base-1.4.5.tar.gz
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Set Apache permissions
+  file:
+    path: /var/www/html/base-1.4.5
+    state: directory
+    mode: "0755"
+    owner: www-data
+    group: www-data
+
+- name: Restart Apache
+  systemd:
+    name: apache2
+    state: restarted
+
+- name: Configure Snort to log to database
+  lineinfile:
+    path: /etc/snort/snort.conf
+    insertafter: EOF
+    line: "output database: log, mysql, user=snort_user password=snortpassword dbname=snort host=localhost"
+
+- name: Check BASE installation
+  uri:
+    url: "http://localhost/base"
+    return_content: yes
+  register: base_response
+
+- name: Print BASE response
+  debug:
+    var: base_response.content
+
+- name: Create Snort configuration directory
+  file:
+    path: /etc/snort
+    state: directory
+
+- name: Copy Snort configuration file
+  template:
+    src: snort.conf.j2
+    dest: /etc/snort/snort.conf
+
+- name: Enable Snort as a service
+  copy:
+    content: |
+      [Unit]
+      Description=Snort Daemon
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/local/bin/snort -c /etc/snort/snort.conf -i ens33
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/snort.service
+
+- name: Start and enable Snort
+  systemd:
+    name: snort
+    enabled: yes
+    state: started
