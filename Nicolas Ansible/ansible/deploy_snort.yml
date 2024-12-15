@@ -1,0 +1,28 @@
+---
+- name: Deploy Snort and web interface
+  hosts: snort_server
+  roles:
+    - snort
+    - web_interface
+
+- name: Configure client machine to send logs
+  hosts: client_machine
+  tasks:
+    - name: Install syslog-ng
+      apt:
+        name: syslog-ng
+        state: present
+
+    - name: Configure syslog-ng to send logs
+      copy:
+        content: |
+          @version: 3.32
+          source s_local { system(); };
+          destination d_snort { tcp("192.168.153.129" port(514)); };
+          log { source(s_local); destination(d_snort); };
+        dest: /etc/syslog-ng/syslog-ng.conf
+
+    - name: Restart syslog-ng
+      systemd:
+        name: syslog-ng
+        state: restarted

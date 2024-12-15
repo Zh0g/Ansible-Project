@@ -1,0 +1,71 @@
+---
+- name: Installation et conf Splunk Forwarder sur splunk_server
+  hosts: splunk_server
+  become: yes
+  vars:
+    splunk_url: "https://download.splunk.com/products/universalforwarder/releases/8.2.6/linux/splunkforwarder-8.2.6-a6fe1ee8894b-linux-2.6-amd64.deb"
+    splunk_deb_path: "/tmp/splunkforwarder.deb"
+    suricata_logs:
+      - "/var/log/suricata/eve.json"
+      - "/var/log/suricata/fast.log"
+
+  tasks:
+    - name: Installation indepedence
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - wget
+        - apt-transport-https
+
+    - name: Installation Splunk Forwarder package
+      get_url:
+        url: "{{ splunk_url }}"
+        dest: "{{ splunk_deb_path }}"
+
+    - name: Installation Splunk Forwarder package
+      apt:
+        deb: "{{ splunk_deb_path }}"
+
+#    - name: Activation de Splunk au demarrage
+#      command: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes
+
+    - name: Verifier existence des fichiers logs
+      stat:
+        path: "{{ item }}"
+      loop: "{{ suricata_logs }}"
+      register: logs_status
+
+    - name: Configuration Splunk pour le recup des fichs logs de suricata
+      shell: |
+        /opt/splunkforwarder/bin/splunk add monitor {{ item }} -auth root:root
+      args:
+        executable: /bin/bash
+      loop: "{{ suricata_logs }}"
+
+- name: Configuration Suricata a distance
+  hosts: suricata_server
+  become: yes
+
+  tasks:
+    - name: Verif Suricata est installe
+      apt:
+        name: suricata
+        state: present
+
+    - name: Configuration de HOME_NET dans Suricata
+      lineinfile:
+        path: /etc/suricata/suricata.yaml
+        regexp: '^HOME_NET:.*'
+        line: 'HOME_NET: "[192.168.153.0/24]"'
+
+    - name: Ajout Suricata fich de regle
+      copy:
+        dest: /etc/suricata/rules/suricata.rules
+        content: |
+          alert icmp any any -> any any (msg: "ICMP Ping Detected"; sid:1000001; rev:1;)
+
+    - name: Rdedemarrage de suricata
+      service:
+        name: suricata
+        state: restarted

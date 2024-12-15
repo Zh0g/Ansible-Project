@@ -1,0 +1,16 @@
+all:
+  hosts:
+    suricata_server:
+      ansible_host: 192.168.153.129
+      ansible_user: root
+      ansible_password: root 
+      ansible_become: true
+      ansible_become_method: sudo
+    splunk_server:
+      ansible_host: localhost
+      ansible_port: 22
+      ansible_user: debian
+      ansible_ssh_pass: debian
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_password: debian

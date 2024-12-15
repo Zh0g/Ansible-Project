@@ -1,0 +1,8 @@
+[local]
+localhost ansible_connection=local ansible_become=yes ansible_become_method=sudo
+
+[monitoring]
+#prometheus ansible_host=192.168.153.143 ansible_user=debian ansible_password=debian ansible_become=true ansible_become_method=sudo
+prometheus ansible_host=192.168.153.143 ansible_user=root ansible_become=true ansible_become_method=sudo ansible_become_password=root
+node_exporter ansible_host=192.168.153.129 ansible_user=root ansible_password=root ansible_become=true ansible_become_method=sudo
+
