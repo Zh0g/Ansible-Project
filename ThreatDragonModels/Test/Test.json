@@ -851,9 +851,19 @@
           }
         ],
         "description": "1st test de digramme Stride"
+      },
+      {
+        "id": 1,
+        "title": "2nd",
+        "diagramType": "Generic",
+        "placeholder": "New generic diagram description",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "version": "2.5.0",
+        "cells": [],
+        "description": "2nd test"
       }
     ],
-    "diagramTop": 1,
+    "diagramTop": 2,
     "reviewer": "",
     "threatTop": 0
   }
