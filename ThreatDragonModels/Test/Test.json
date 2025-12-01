@@ -1191,7 +1191,7 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "https",
+              "name": "??",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -1204,21 +1204,21 @@
               "threats": []
             },
             "labels": [
-              "https"
+              "??"
             ],
-            "id": "4d02a280-4fae-41f4-943c-a2aac91961b1",
+            "id": "cd383746-6917-4d8c-afaf-757352039028",
             "source": {
-              "cell": "da13d766-19a2-4ba4-b4b2-894f06f8d1c9",
-              "port": "0ac898f7-fa7a-4786-9db6-6a4d49a9600a"
+              "x": -627,
+              "y": 190
             },
             "target": {
-              "cell": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
+              "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
               "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
             },
             "vertices": [
               {
-                "x": -840,
-                "y": 290
+                "x": -680,
+                "y": 340
               }
             ]
           },
@@ -1257,15 +1257,21 @@
             "labels": [
               "??"
             ],
-            "id": "cd383746-6917-4d8c-afaf-757352039028",
+            "id": "b26395ee-7512-4c87-a538-ccba569037a6",
             "source": {
-              "x": -627,
+              "x": -610,
               "y": 190
             },
             "target": {
-              "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
+              "cell": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
               "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
-            }
+            },
+            "vertices": [
+              {
+                "x": -640,
+                "y": 320
+              }
+            ]
           },
           {
             "shape": "flow",
@@ -1287,7 +1293,7 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "Data Flow",
+              "name": "??",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -1300,17 +1306,23 @@
               "threats": []
             },
             "labels": [
-              "Data Flow"
+              "??"
             ],
-            "id": "eaf6b766-558f-4c80-9ca5-4b773d0c9293",
+            "id": "78a04f34-7688-4498-984c-c418a033f143",
             "source": {
-              "x": -730,
-              "y": 240
+              "x": -929,
+              "y": 200
             },
             "target": {
-              "x": -630,
-              "y": 340
-            }
+              "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
+              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
+            },
+            "vertices": [
+              {
+                "x": -929,
+                "y": 340
+              }
+            ]
           },
           {
             "position": {
@@ -1450,6 +1462,7 @@
             },
             "visible": true,
             "shape": "actor",
+            "zIndex": 16,
             "ports": {
               "groups": {
                 "top": {
@@ -1533,7 +1546,6 @@
               ]
             },
             "id": "c622c4fc-5b30-4622-944e-38a95b3d06d1",
-            "zIndex": 16,
             "data": {
               "type": "tm.Actor",
               "name": "Applications\nAdministrator",
@@ -1570,6 +1582,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 17,
             "ports": {
               "groups": {
                 "top": {
@@ -1653,7 +1666,6 @@
               ]
             },
             "id": "c5b579d9-b4d1-4b2d-a720-a3d33d03ad80",
-            "zIndex": 17,
             "data": {
               "type": "tm.Store",
               "name": "Infrastructure Serveur",
@@ -1694,6 +1706,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 18,
             "ports": {
               "groups": {
                 "top": {
@@ -1777,7 +1790,6 @@
               ]
             },
             "id": "4cf9af42-6816-4b79-80d1-12cf50b1b22d",
-            "zIndex": 18,
             "data": {
               "type": "tm.Store",
               "name": "Infrastructure Docker",
@@ -1818,6 +1830,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 19,
             "ports": {
               "groups": {
                 "top": {
@@ -1901,7 +1914,6 @@
               ]
             },
             "id": "10c6bead-e687-4aa3-b53b-cb653bae868f",
-            "zIndex": 19,
             "data": {
               "type": "tm.Store",
               "name": "Applications",
@@ -1942,6 +1954,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 20,
             "ports": {
               "groups": {
                 "top": {
@@ -2025,7 +2038,6 @@
               ]
             },
             "id": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
-            "zIndex": 20,
             "data": {
               "type": "tm.Store",
               "name": "Web Applications",
@@ -2063,6 +2075,7 @@
             },
             "visible": true,
             "shape": "process",
+            "zIndex": 21,
             "ports": {
               "groups": {
                 "top": {
@@ -2146,7 +2159,6 @@
               ]
             },
             "id": "1544e4f3-4505-421b-a85f-813e248affe3",
-            "zIndex": 21,
             "data": {
               "type": "tm.Process",
               "name": "Bastion",
@@ -2162,6 +2174,137 @@
               "threats": []
             },
             "children": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 22,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "https",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": []
+            },
+            "labels": [
+              "https"
+            ],
+            "id": "4d02a280-4fae-41f4-943c-a2aac91961b1",
+            "source": {
+              "cell": "da13d766-19a2-4ba4-b4b2-894f06f8d1c9",
+              "port": "0ac898f7-fa7a-4786-9db6-6a4d49a9600a"
+            },
+            "target": {
+              "cell": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
+              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
+            },
+            "vertices": [
+              {
+                "x": -840,
+                "y": 290
+              }
+            ],
+            "tools": {
+              "items": [
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead",
+                "boundary",
+                "button-remove",
+                "vertices",
+                "source-arrowhead",
+                "target-arrowhead"
+              ],
+              "name": null
+            }
           }
         ],
         "description": "2nd test de digramme Stride"
