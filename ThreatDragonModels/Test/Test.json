@@ -862,6 +862,48 @@
         "cells": [
           {
             "position": {
+              "x": -985.0000000000005,
+              "y": 215.0000000000009
+            },
+            "size": {
+              "width": 390,
+              "height": 340
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "ec3e5449-7016-4819-80cd-15b521eb274b",
+            "zIndex": -1,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "Trust Boundary",
+              "description": "",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
+              "x": -518.0000000000002,
+              "y": 215.0000000000009
+            },
+            "size": {
+              "width": 390,
+              "height": 290
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "94d27434-4814-4141-96de-91142893ad35",
+            "zIndex": -1,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "Trust Boundary",
+              "description": "",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "position": {
               "x": -480,
               "y": 130
             },
@@ -1114,7 +1156,7 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "Https",
+              "name": "SSH/RDP",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -1127,109 +1169,7 @@
               "threats": []
             },
             "labels": [
-              "Data Flow"
-            ],
-            "id": "81538900-5249-4e70-bed7-ad0b54dc497a",
-            "source": {
-              "x": -670,
-              "y": 160
-            },
-            "target": {
-              "cell": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
-              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
-            },
-            "vertices": [
-              {
-                "x": -730,
-                "y": 210
-              }
-            ]
-          },
-          {
-            "shape": "flow",
-            "attrs": {
-              "line": {
-                "stroke": "#333333",
-                "targetMarker": {
-                  "name": "block"
-                },
-                "sourceMarker": {
-                  "name": ""
-                },
-                "strokeDasharray": null
-              }
-            },
-            "width": 200,
-            "height": 100,
-            "zIndex": 10,
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "??",
-              "description": "",
-              "outOfScope": false,
-              "isTrustBoundary": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
-            "labels": [
-              "??"
-            ],
-            "id": "cd383746-6917-4d8c-afaf-757352039028",
-            "source": {
-              "x": -627,
-              "y": 190
-            },
-            "target": {
-              "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
-              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
-            },
-            "vertices": [
-              {
-                "x": -680,
-                "y": 340
-              }
-            ]
-          },
-          {
-            "shape": "flow",
-            "attrs": {
-              "line": {
-                "stroke": "#333333",
-                "targetMarker": {
-                  "name": "block"
-                },
-                "sourceMarker": {
-                  "name": ""
-                },
-                "strokeDasharray": null
-              }
-            },
-            "width": 200,
-            "height": 100,
-            "zIndex": 10,
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "??",
-              "description": "",
-              "outOfScope": false,
-              "isTrustBoundary": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": []
-            },
-            "labels": [
-              "??"
+              "SSH/RDP"
             ],
             "id": "b26395ee-7512-4c87-a538-ccba569037a6",
             "source": {
@@ -1267,7 +1207,7 @@
             "connector": "smooth",
             "data": {
               "type": "tm.Flow",
-              "name": "??",
+              "name": "Https\nFlux applicatifs",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -1280,7 +1220,7 @@
               "threats": []
             },
             "labels": [
-              "??"
+              "Https\nFlux applicatifs"
             ],
             "id": "78a04f34-7688-4498-984c-c418a033f143",
             "source": {
@@ -1291,12 +1231,7 @@
               "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
               "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
             },
-            "vertices": [
-              {
-                "x": -929,
-                "y": 340
-              }
-            ]
+            "vertices": []
           },
           {
             "shape": "flow",
@@ -1443,17 +1378,109 @@
                 "x": -190,
                 "y": 330
               }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "SSH/RDP",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": []
+            },
+            "labels": [
+              "SSH/RDP"
             ],
-            "tools": {
-              "items": [
-                "boundary",
-                "button-remove",
-                "vertices",
-                "source-arrowhead",
-                "target-arrowhead"
-              ],
-              "name": null
-            }
+            "id": "cd383746-6917-4d8c-afaf-757352039028",
+            "source": {
+              "x": -627,
+              "y": 190
+            },
+            "target": {
+              "cell": "10c6bead-e687-4aa3-b53b-cb653bae868f",
+              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
+            },
+            "vertices": [
+              {
+                "x": -680,
+                "y": 340
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Https",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": []
+            },
+            "labels": [
+              "Https"
+            ],
+            "id": "81538900-5249-4e70-bed7-ad0b54dc497a",
+            "source": {
+              "cell": "c622c4fc-5b30-4622-944e-38a95b3d06d1",
+              "port": "9e422e52-475a-4e8a-aa9f-1e9c6be744ed"
+            },
+            "target": {
+              "cell": "c1612db2-91cb-4aa6-9fc1-4811a3dba6a2",
+              "port": "6f7482fc-072c-47b6-9aaf-926254d6f696"
+            },
+            "vertices": [
+              {
+                "x": -730,
+                "y": 210
+              }
+            ]
           },
           {
             "position": {
@@ -1574,7 +1601,7 @@
           },
           {
             "position": {
-              "x": -670,
+              "x": -680,
               "y": 130
             },
             "size": {
@@ -1692,15 +1719,15 @@
           {
             "position": {
               "x": -480,
-              "y": 410
+              "y": 430
             },
             "size": {
-              "width": 150,
+              "width": 120,
               "height": 60
             },
             "attrs": {
               "text": {
-                "text": "Infrastructure Serveur"
+                "text": "Infrastructure\nDocker"
               },
               "topLine": {
                 "strokeWidth": 1.5,
@@ -1799,7 +1826,7 @@
             "id": "c5b579d9-b4d1-4b2d-a720-a3d33d03ad80",
             "data": {
               "type": "tm.Store",
-              "name": "Infrastructure Serveur",
+              "name": "Infrastructure\nDocker",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -1824,7 +1851,7 @@
             },
             "attrs": {
               "text": {
-                "text": "Infrastructure Docker"
+                "text": "Infrastructure\nServeur"
               },
               "topLine": {
                 "strokeWidth": 1.5,
@@ -1923,7 +1950,7 @@
             "id": "4cf9af42-6816-4b79-80d1-12cf50b1b22d",
             "data": {
               "type": "tm.Store",
-              "name": "Infrastructure Docker",
+              "name": "Infrastructure\nServeur",
               "description": "",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -2479,8 +2506,8 @@
           },
           {
             "position": {
-              "x": -276.25,
-              "y": 200.00000000000023
+              "x": -280,
+              "y": 230
             },
             "size": {
               "width": 90,
